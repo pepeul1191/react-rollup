@@ -2,11 +2,12 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
+import css from 'rollup-plugin-css-only';
 
 export default {
    input: 'src/index.js',
    output: {
-      file: 'public/bundle.js',
+      file: 'public/dist/bundle.js',
       format: 'iife'
    },
    plugins: [
@@ -19,6 +20,7 @@ export default {
          extensions: ['.js', '.jsx']
       }),
       commonjs(),
+      css({ output: 'styles.css' }),
       replace({
          preventAssignment: false,
          'process.env.NODE_ENV': '"development"'
