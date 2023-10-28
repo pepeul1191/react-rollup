@@ -2,12 +2,15 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import babel from '@rollup/plugin-babel';
 import replace from '@rollup/plugin-replace';
+import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 
-export default {
+const production = !process.env.ROLLUP_WATCH;
+
+const Demo = {
    input: 'src/index.js',
    output: {
-      file: 'public/dist/bundle.js',
+      file: production ? 'public/dist/demo.min.js' : 'public/dist/demo.js',
       format: 'iife'
    },
    plugins: [
@@ -19,8 +22,11 @@ export default {
          presets: ['@babel/preset-react'],
          extensions: ['.js', '.jsx']
       }),
+      terser(),
       commonjs(),
-      css({ output: 'styles.css' }),
+      css({ 
+         output: production ?  'demo.min.css' : 'demo.css'
+      }),
       replace({
          preventAssignment: false,
          'process.env.NODE_ENV': '"development"'
@@ -31,3 +37,5 @@ export default {
      //console.warn(warning.message);
    }
 }
+
+export default [Demo, ];
