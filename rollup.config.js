@@ -25,5 +25,9 @@ export default {
          preventAssignment: false,
          'process.env.NODE_ENV': '"development"'
       })
-   ]
+   ],
+   onwarn: function (warning) {
+     if (warning.code === 'UNUSED_EXTERNAL_IMPORT') return;
+     //console.warn(warning.message);
+   }
 }
