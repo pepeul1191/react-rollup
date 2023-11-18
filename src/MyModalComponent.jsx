@@ -12,7 +12,6 @@ const MyModalComponent = () => {
       <Button variant="primary" onClick={handleShow}>
         Mostrar Modal
       </Button>
-
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Mi Modal</Modal.Title>
