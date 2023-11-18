@@ -18,6 +18,44 @@ Migraciones con DBMATE - accesos/sqlite3:
     $ npm run dbmate:up
     $ npm run dbmate:rollback
 
+```
+my-react-app/
+│
+├── public/
+│   ├── index.html
+│   └── favicon.ico
+│
+├── src/
+│   ├── assets/
+│   │   ├── images/
+│   │   └── styles/
+│   │       ├── components/
+│   │       ├── layouts/
+│   │       └── App.css
+│   │
+│   ├── components/
+│   │   ├── common/
+│   │   ├── feature1/
+│   │   └── feature2/
+│   │
+│   ├── pages/
+│   │   ├── Home.js
+│   │   ├── About.js
+│   │   └── Contact.js
+│   │
+│   ├── services/
+│   │   └── api.js
+│   │
+│   ├── App.js
+│   ├── index.js
+│   └── index.css
+│
+├── .gitignore
+├── package.json
+├── README.md
+└── ...
+```
+
 ---
 
 Fuentes:

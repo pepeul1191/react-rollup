@@ -8,7 +8,7 @@ import css from 'rollup-plugin-css-only';
 const production = !process.env.ROLLUP_WATCH;
 
 const Demo = {
-   input: 'src/index.js',
+   input: 'src/entries/index.js',
    output: {
       file: production ? 'public/dist/demo.min.js' : 'public/dist/demo.js',
       format: 'iife'
