@@ -1,3 +1,7 @@
-body{
-  background: yellow;
+.btn{
+  border-radius: 0px;
+}
+
+.btn > i {
+  margin-right: 10px;
 }

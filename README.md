@@ -56,6 +56,11 @@ my-react-app/
 └── ...
 ```
 
+VSCode Plugin
+
+    Simple React Snippets
+
+
 ---
 
 Fuentes:

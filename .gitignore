@@ -20,4 +20,5 @@ public/uploads
 public/templates
 tmp
 public/build
+public/fonts
 Gemfile.lock
