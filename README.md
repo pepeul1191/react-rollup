@@ -4,7 +4,7 @@
 Archivo <b>.env</b>
 
 DB="sqlite:///db/demo.db"
-ENV="local"
+ENV="local"||"server"
 MAIL_PORT=465
 MAIL_USER="xyz@gmail.com"
 MAIL_PASS="asdfas"

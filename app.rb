@@ -1,7 +1,16 @@
 require 'sinatra'
+require 'dotenv'
 
+Dotenv.load('.env')
 set :public_folder, File.dirname(__FILE__) + '/public'
 set :views, File.dirname(__FILE__) + '/views'
+set :port, 3000 
+
+helpers do
+  def set_global_variable(value)
+    @ENV = ENV
+  end
+end
 
 before do
   headers['server'] = 'Ruby, Ubuntu'
@@ -23,6 +32,16 @@ not_found do
     status 404
     'Recurso no encontrado'
   end
+end
+
+get [
+  '/login',
+  '/sign-in',
+  '/reset-password',
+  '/new-password/success'
+] do
+  locals = {title: 'Login'}
+  erb :login, locals: locals
 end
 
 [ 

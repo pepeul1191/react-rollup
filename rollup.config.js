@@ -51,6 +51,50 @@ const App = {
    }
 };
 
+const Login = {
+   input: 'src/entries/login.js',
+   output: {
+      file: production ? 'public/dist/login.min.js' : 'public/dist/login.js',
+      format: 'iife'
+   },
+   plugins: [
+      nodeResolve({
+         extensions: ['.js', '.jsx']
+      }),
+      babel({
+         babelHelpers: 'bundled',
+         presets: ['@babel/preset-react'],
+         extensions: ['.js', '.jsx']
+      }),
+      terser(),
+      commonjs(),
+      css({ 
+         output: production ?  'login.min.css' : 'login.css'
+      }),
+      copy({
+			targets: [
+				{ 
+					src: 'node_modules/font-awesome/fonts/*', 
+					dest: 'public/fonts'
+				},
+				{ 
+					src: 'node_modules/bootstrap-icons/font/fonts/*', 
+					dest: 'public/build/fonts'
+				}
+			]
+		}),
+      replace({
+         preventAssignment: false,
+         'process.env.NODE_ENV': '"development"'
+      })
+   ],
+   onwarn: function (warning) {
+     if (warning.code === 'UNUSED_EXTERNAL_IMPORT') return;
+     //console.warn(warning.message);
+   }
+};
+
+
 const Error = {
    input: 'src/entries/error.js',
    output: {
@@ -82,4 +126,4 @@ const Error = {
    }
 };
 
-export default [App, Error];
+export default [App, Error, Login];
