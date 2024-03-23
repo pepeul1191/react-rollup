@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import LogoSVG  from './../../assets/svg/bBOV3E01.svg';
 
 const Index = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const messageParam = queryParams.get('message');
+  // attributes
+  const messages = {
+    'user-password': 'Usuario y/o contraseña no coinciden',
+    'error': 'Ocurrió un error no esperado',
+    null: '', 
+  };
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState(messages[messageParam]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -38,6 +48,7 @@ const Index = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
+          <Form.Label>{message}</Form.Label>
           <Button variant="primary" type="submit" className="w-100 mt-2">
             Ingresar
           </Button>

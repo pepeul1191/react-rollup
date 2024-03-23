@@ -14,10 +14,10 @@ const Login = () => (
     <Container className="d-flex justify-content-center align-items-center w-100" style={{ height: '100vh'}}>
       <div className="">
         <Routes>
-          <Route path="/login" element={<Index />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/new-password/success" element={<NewPasswordSuccess />} />
+          <Route path="/login" element={<Index />} onChange={() => { document.title = 'Iniciar sesión'; }} />
+          <Route path="/sign-in" element={<SignIn />} onChange={() => { document.title = 'Crear Cuenta'; }}/>
+          <Route path="/reset-password" element={<ResetPassword /> } onChange={() => { document.title = 'Cambiar Contraseña'; }}/>
+          <Route path="/new-password/success" onChange={() => { document.title = 'Cambio de Contraseña OK'; }} element={<NewPasswordSuccess />} />
         </Routes>
       </div>
     </Container>
