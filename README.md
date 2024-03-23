@@ -60,6 +60,8 @@ VSCode Plugin
 
     Simple React Snippets
 
+SVGs, usar inkscape, generar un png y luego usar la página https://picsvg.com/es/ usando el filtro internal 1.
+
 
 ---
 

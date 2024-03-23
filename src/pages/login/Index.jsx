@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { ReactComponent as Logo } from './../../assets/svg/ic_ulima.svg';
+import LogoSVG  from './../../assets/svg/bBOV3E01.svg';
 
 const Index = () => {
   const [email, setEmail] = useState('');
@@ -16,28 +16,30 @@ const Index = () => {
   return (
     <>
       <div className="form-container">
-        <Logo />
+        <div className="logo-container">
+          <LogoSVG className="logo custom-color" />
+        </div>
         <Form onSubmit={handleSubmit} style={{width: '300px'}} className="row" >
           <Form.Group controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
+            <Form.Label>Usuario</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter email"
+              placeholder="Ingrese su usuario"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
           <Form.Group controlId="formBasicPassword" className="mt-1">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Contraseña</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Password"
+              placeholder="Ingrese su contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
           <Button variant="primary" type="submit" className="w-100 mt-2">
-            Submit
+            Ingresar
           </Button>
         </Form>
         <Row className="mt-2">
@@ -55,7 +57,7 @@ const Index = () => {
       </div>
       <Row className="mt-2">
         <footer className="mt-3" style={{textAlign: 'left', paddingLeft: '14px'}}>
-          Powered by Software Web Perú 2023. Ir.
+          Powered by Software Web Perú 2023. <a style={{fontWeight: 400}} className="link" target="_blank" href="https://softweb.pe">Ir</a>.
         </footer>
       </Row>
     </>

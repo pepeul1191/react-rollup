@@ -5,6 +5,7 @@ import Index from '../pages/login/Index';
 import ResetPassword from '../pages/login/ResetPassword';
 import NewPasswordSuccess from '../pages/login/NewPasswordSuccess';
 import SignIn from '../pages/login/SignIn';
+import 'font-awesome/css/font-awesome.min.css';
 import '../assets/css/styles.css'; 
 import '../assets/css/login.css'; 
 

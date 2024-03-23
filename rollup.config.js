@@ -5,6 +5,7 @@ import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import copy from 'rollup-plugin-copy';
+import svgr from '@svgr/rollup';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -18,6 +19,7 @@ const App = {
       nodeResolve({
          extensions: ['.js', '.jsx']
       }),
+      svgr(),
       babel({
          babelHelpers: 'bundled',
          presets: ['@babel/preset-react'],
@@ -68,6 +70,7 @@ const Login = {
       }),
       terser(),
       commonjs(),
+      svgr(),
       css({ 
          output: production ?  'login.min.css' : 'login.css'
       }),
@@ -105,6 +108,7 @@ const Error = {
       nodeResolve({
          extensions: ['.js', '.jsx']
       }),
+      svgr(),
       babel({
          babelHelpers: 'bundled',
          presets: ['@babel/preset-react'],

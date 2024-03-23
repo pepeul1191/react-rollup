@@ -19,3 +19,22 @@ body{
 .link{
   text-decoration: none;
 }
+
+.logo-container{
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; 
+}
+
+.logo{
+  height: 150px;
+  width: 150px;
+}
+
+.custom-color path{
+  fill: #FDBF3B;
+}
+
+.icon{
+  font-size: 80px;
+}
