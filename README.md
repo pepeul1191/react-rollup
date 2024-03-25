@@ -62,6 +62,13 @@ VSCode Plugin
 
 SVGs, usar inkscape, generar un png y luego usar la página https://picsvg.com/es/ usando el filtro internal 1.
 
+### Migraciones
+
+Migraciones con DBMATE - accesos/sqlite3:
+
+    $ npm run dbmate:new <<nombre_de_migracion>>
+    $ npm run dbmate:up
+    $ npm run dbmate:rollback
 
 ---
 
