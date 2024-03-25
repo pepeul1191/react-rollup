@@ -6,6 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import copy from 'rollup-plugin-copy';
 import svgr from '@svgr/rollup';
+import json from '@rollup/plugin-json';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -27,6 +28,7 @@ const App = {
       }),
       terser(),
       commonjs(),
+      json(),
       css({ 
          output: production ?  'demo.min.css' : 'demo.css'
       }),
@@ -57,7 +59,8 @@ const Login = {
    input: 'src/entries/login.js',
    output: {
       file: production ? 'public/dist/login.min.js' : 'public/dist/login.js',
-      format: 'iife'
+      format: 'iife',
+      sourcemap: true, 
    },
    plugins: [
       nodeResolve({
@@ -68,8 +71,8 @@ const Login = {
          presets: ['@babel/preset-react'],
          extensions: ['.js', '.jsx']
       }),
-      terser(),
       commonjs(),
+      json(),
       svgr(),
       css({ 
          output: production ?  'login.min.css' : 'login.css'
@@ -86,6 +89,7 @@ const Login = {
 				}
 			]
 		}),
+      terser(),
       replace({
          preventAssignment: false,
          'process.env.NODE_ENV': '"development"'
@@ -116,6 +120,7 @@ const Error = {
       }),
       terser(),
       commonjs(),
+      json(),
       css({ 
          output: production ?  'error.min.css' : 'error.css'
       }),

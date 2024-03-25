@@ -1,3 +1,4 @@
+require 'json'
 require 'sinatra'
 require 'dotenv'
 
@@ -52,4 +53,20 @@ end
   get path do
     erb :home
   end
+end
+
+post '/user/validate' do
+  # request
+  request.body.rewind
+  payload = JSON.parse(request.body.read)
+  puts '1 ++++++++++++++++++++++++++++++++++++++++++'
+  puts payload
+  puts '2 ++++++++++++++++++++++++++++++++++++++++++'
+  # Procesar el payload
+  # Aquí puedes realizar cualquier acción necesaria con los datos recibidos
+  # do
+
+  # respnse
+  content_type :json
+  { message: "¡Payload recibido correctamente!" }.to_json
 end

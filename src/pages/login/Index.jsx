@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import LogoSVG  from './../../assets/svg/bBOV3E01.svg';
+import { validate } from '../../services/UserService';
 
 const Index = () => {
   const location = useLocation();
@@ -9,18 +10,22 @@ const Index = () => {
   const messageParam = queryParams.get('message');
   // attributes
   const messages = {
-    'user-password': 'Usuario y/o contraseña no coinciden',
-    'error': 'Ocurrió un error no esperado',
+    'user-password': 'Error: Usuario y/o contraseña no coinciden',
+    'error': 'Error: Ocurrió un error no esperado',
     null: '', 
   };
-  const [email, setEmail] = useState('');
+  const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState(messages[messageParam]);
 
-  const handleSubmit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
+    try {
+      const data = await validate(user, password);
+      setMessage(data.message);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
   
   return (
@@ -29,14 +34,14 @@ const Index = () => {
         <div className="logo-container">
           <LogoSVG className="logo custom-color" />
         </div>
-        <Form onSubmit={handleSubmit} style={{width: '300px'}} className="row" >
+        <Form onSubmit={submit} style={{width: '300px'}} className="row" >
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Usuario</Form.Label>
             <Form.Control
               type="text"
               placeholder="Ingrese su usuario"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
             />
           </Form.Group>
           <Form.Group controlId="formBasicPassword" className="mt-1">
