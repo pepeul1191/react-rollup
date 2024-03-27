@@ -1,19 +1,21 @@
-var homeController = require('../api/controllers/home_controller');
-var userController = require('../api/controllers/user_controller');
-var studentController = require('../api/controllers/student_controller');
-var loginController = require('../api/controllers/login_controller');
-var adminController = require('../api/controllers/admin_controller');
-var carrerController = require('../api/controllers/carrer_controller');
-var pokemonController = require('../api/controllers/pokemon_controller');
-var memberController = require('../api/controllers/member_controller');
-var exerciseController = require('../api/controllers/exercise_controller');
-var bodyPartController = require('../api/controllers/body_part_controller');
-var fileController = require('../api/controllers/file_controller');
-var errorController = require('../api/controllers/error_controller');
+// Importación de módulos
+import homeController from '../api/controllers/home_controller.js';
+/*import userController from '../api/controllers/user_controller';
+import studentController from '../api/controllers/student_controller';
+import loginController from '../api/controllers/login_controller';
+import adminController from '../api/controllers/admin_controller';
+import carrerController from '../api/controllers/carrer_controller';
+import pokemonController from '../api/controllers/pokemon_controller';
+import memberController from '../api/controllers/member_controller';
+import exerciseController from '../api/controllers/exercise_controller';
+import bodyPartController from '../api/controllers/body_part_controller';
+import fileController from '../api/controllers/file_controller';
+import errorController from '../api/controllers/error_controller';*/
 
-module.exports = (app) => {
+// Exportación del middleware
+export default (app) => {
   app.use('/', homeController);
-  app.use('/user', userController);
+  /*app.use('/user', userController);
   app.use('/student', studentController);
   app.use('/error', errorController);
   app.use('/admin', adminController);
@@ -24,4 +26,5 @@ module.exports = (app) => {
   app.use('/exercise', exerciseController);
   app.use('/body_part', bodyPartController);
   app.use('/file', fileController);
+  */
 }

@@ -1,15 +1,16 @@
-const Sequelize = require('sequelize');
+import { Sequelize } from 'sequelize';
 
-module.exports = new Sequelize('database', 'username', 'password', {
-	// host: 'localhost',
-	dialect: 'sqlite',
-	pool: {
-		max: 5,
-		min: 0,
-		idle: 10000
-	},
-	storage: 'db/app.db',
-	define: {
-		timestamps: false // true by default
-	}
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: 'db/app.db',
+  define: {
+    timestamps: false // true by default
+  },
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 10000
+  }
 });
+
+export default sequelize;
