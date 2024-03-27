@@ -1,6 +1,6 @@
-const { getContent } = require('../../config/contents');
+import { getContent } from '../../config/contents.js';
 
-module.exports = (req, res, next) => {
+const errorHandlerMiddleware = (req, res, next) => {
   const lang = 'sp';
   
   if (req.method === 'GET') {
@@ -17,3 +17,6 @@ module.exports = (req, res, next) => {
 
   next();
 };
+
+
+export default errorHandlerMiddleware;

@@ -4,7 +4,7 @@ const loadCss = (csss) => {
   let resp = '';
   if (typeof csss !== 'undefined') {
     for (let i = 0; i < csss.length; i++) {
-      resp += `<link rel="stylesheet" type="text/css" href="${constants().static_url}${csss[i]}.css" />`;
+      resp += `<link rel="stylesheet" type="text/css" href="${constants.static_url}${csss[i]}.css" />`;
     }
   }
   return resp;
@@ -14,7 +14,7 @@ const loadJs = (jss) => {
   let resp = '';
   if (typeof jss !== 'undefined') {
     for (let i = 0; i < jss.length; i++) {
-      resp += `<script src="${constants().static_url}${jss[i]}.js"></script>`;
+      resp += `<script src="${constants.static_url}${jss[i]}.js"></script>`;
     }
   }
   return resp;
