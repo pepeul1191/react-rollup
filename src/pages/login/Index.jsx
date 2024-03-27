@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import LogoSVG from './../../assets/svg/bBOV3E01.svg';
-import { validate } from '../../services/UserService';
+import { validate, loginCheck } from '../../services/UserService';
 
 class Index extends Component {
   constructor(props) {
@@ -13,17 +13,29 @@ class Index extends Component {
       password: '',
       message: '',
       messageClass: '',
-      disabled: false
+      disabled: false,
+      isValidJWT: false,
     };
     this.userInputRef = React.createRef();
     this.passwordInputRef = React.createRef();
   }
 
   componentDidMount() {
-    console.log('componentWillMount')
     const token = localStorage.getItem('jwtToken');
     if (token != null) {
-      //window.location.href = '/';
+      loginCheck()
+        .then(data => {
+          // console.log(data); alert();
+          if (data.message == true){
+            // token time expired, continue to login
+            this.setState({
+              isValidJWT: true,
+            });
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });      
     }
   }
 
@@ -62,9 +74,9 @@ class Index extends Component {
           }
           setTimeout(() => {
             this.setState({ message: '' });
-            localStorage.setItem('jwtToken', data.message);
             if (continueToApp) {
-              history.push('/');
+              localStorage.setItem('jwtToken', data.message);
+              window.location.href = '/';
             }
           }, timeout);
         })
@@ -77,7 +89,10 @@ class Index extends Component {
       } else {
         this.passwordInputRef.current.focus();
       }
-      this.setState({ message: 'Debe de llenar el formulario', messageClass: 'text-danger' });
+      this.setState({ 
+        message: 'Debe de llenar el formulario', 
+        messageClass: 'text-danger' 
+      });
       setTimeout(() => {
         this.setState({ message: '', messageClass: '' });
       }, 6000);
@@ -85,8 +100,11 @@ class Index extends Component {
   };
 
   render() {
-    console.log('render')
-    const { message, messageClass, disabled, user, password } = this.state;
+    const {message, messageClass, disabled, user, password, isValidJWT} = this.state;
+    if (isValidJWT) {
+      window.location.href = '/';
+      return null;
+    }
     return (
       <>
         <div className="form-container">

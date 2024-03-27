@@ -25,3 +25,25 @@ export const validate = (user, password) => {
       throw error; // Re-lanzar el error para manejarlo en el componente
     });
 };
+
+export const loginCheck = () => {
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
+    },
+    body: JSON.stringify({})
+  };
+  // do request
+  return fetch(`${BASE_URL}user/login-check`, requestOptions)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .catch(error => {
+      throw error; // Re-lanzar el error para manejarlo en el componente
+    });
+};

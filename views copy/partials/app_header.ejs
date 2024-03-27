@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= locals.title %></title>
+  <link rel="shortcut icon" href="<%= constants.static_url %>favicon.ico">
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- Inicio Load_CSS-->
+  <%- helpers.loadCss(locals.csss) %>
+  <!-- Fin CSS-->
+  <script type="text/javascript">
+    var BASE_URL = '<%= constants.base_url %>';
+    var STATICS_URL  = '<%= constants.static_url %>';
+    var CSRF = "<%=constants.csrf.secret%>";
+    var CSRF_KEY = "<%=constants.csrf.key%>";
+  </script>
+</head>
+<body>
+  <!-- Inicio modal -->
+  <button type="button" class="btn btn-primary btn-lg d-none" data-toggle="modal" data-target="#modal-container" data-backdrop="static"  data-backdrop="static" id="btnModal">Launch demo modal</button>
+  <div class="modal fade" id="modal-container" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  </div>
+  <!-- Fin modal -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">App Demo</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Inicio <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/carrer">Carreras</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Dropdown
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">Disabled</a>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <% if (constants.session == false){ %>
+          <a class="btn btn-success my-2 my-sm-0" href="/login">Ingresar</a>
+          <a class="btn btn-primary my-2 my-sm-0" href="/login/sign-in" style="margin-left:10px;">Registrarse</a>
+          <a class="btn btn-success my-2 my-sm-0" href="/profile" style="margin-left:10px;">Ver Perfil</a>
+          <a class="btn btn-success my-2 my-sm-0" href="/sign-out" style="margin-left:10px;">Salir</a>
+          <% } else { %>
+            <% if (session.state == 'activate'){ %>
+              <a class="btn btn-success my-2 my-sm-0" href="/profile" style="margin-left:10px;">Ver Perfil</a>
+              <a class="btn btn-secondary my-2 my-sm-0" href="/sign-out" style="margin-left:10px;">Salir</a>
+            <% } else { %>
+              <a class="btn btn-success my-2 my-sm-0" href="/login">Ingresar</a>
+              <a class="btn btn-primary my-2 my-sm-0" href="/login/sign-in" style="margin-left:10px;">Registrarse</a>
+            <% } %>
+          <% } %>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <div id="app">
