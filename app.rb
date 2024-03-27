@@ -83,6 +83,43 @@ post '/user/validate' do
   return resp.to_json
 end
 
+post '/user/check-token' do
+  # request
+  request.body.rewind
+  payload = JSON.parse(request.body.read)
+  # do
+  resp = {}
+  status_code = 200
+  user_name = payload['user']
+  password = payload['password']
+  begin
+    user = User.where(user: user_name, password: password).first
+    if user
+      payload = {
+        user_id: user.id, 
+        created: Time.now,
+        updated: nil
+      }
+      token = JWT.encode(payload, SECRET_KEY, 'HS256')
+      # respnse
+      content_type :json
+      resp['message'] = token
+      resp['status'] = 'sucess' 
+    else
+      status_code = 404
+      resp['message'] = 'Usuario no encontrado'
+      resp['status'] = 'error-404' 
+    end
+  rescue => e
+    # Manejar excepción
+    puts "Error: #{e.message}"
+    resp['message'] = 'Error al validar el usuario'
+    resp['status'] = 'error-500'
+  end
+  # response
+  return resp.to_json
+end
+
 # views
 get [
   '/login',
