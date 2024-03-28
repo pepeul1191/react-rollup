@@ -1,5 +1,5 @@
 var express = require('express');
-const BodyPart = require('../models/body_part');
+const BodyPart = require('../../models/body_part');
 var router = express.Router();
 
 router.get('/list', (req, res, next) => {

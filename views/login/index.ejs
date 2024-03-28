@@ -1,99 +1,13 @@
-<%- include('../partials/blank_header') %>
-<!-- LOGIN -->
-<form class="form-signin" action="/login" method="post" id="login" style="display: none;">
-  <h1 class="h3 mb-3 font-weight-normal">Bienvenido</h1>
-  <input type="hidden" name="key" value="value">
-  <span class="extraData"></span>
-  <!--USER -->
-  <label for="user" class="sr-only">User</label>
-  <input type="text" id="user" class="form-control" placeholder="Usuario" required="" autofocus="" name="user">
-  <!--CSRF -->
-  <input type="hidden" name="<%= constants.csrf.key %>" value="<%= constants.csrf.key %>">
-  <!--PASS -->
-  <label for="inputPassword" class="sr-only">Password</label>
-  <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required="" name="password">
-  <!--MESSAGE-->
-  <p class="<%= messageColor %> message" style="margin-top:10px;" id="message"><%= message %></p>
-  <!--BUTTON -->
-  <button class="btn btn-lg btn-primary btn-block" type="submit" style="margin-bottom: 1.5px;">
-    Ingresar
-  </button>
-  <button class="btn btn-lg btn-success btn-block" type="submit" disabled>
-    <i class="fa fa-google" aria-hidden="true"></i>
-    Ingresar con Google
-  </button>
-  <!--FooTER LOGIN NAV -->
-  <div class="link-login">
-    <a class="" href="/login/sign-in">
-      Registrarse
-    </a>
-    <a id="forgotpassword" class="pull-right" href="/login/forgot-password">
-      Olvidó su Contraseña
-    </a>
-  </div>
-  <p class="mt-5 mb-3 text-muted">Powered By <a href="http://softweb.pe/"> Softtware Web Perú</a> © 2017-2018</p>
-</form>
-<!-- SIGN IN -->
-<form class="form-signin" action="/login/sign-in" method="post" id="sign-in" style="display: none;">
-  <h1 class="h3 mb-3 font-weight-normal">Crear Cuenta</h1>
-  <input type="hidden" name="key" value="value">
-  <span class="extraData"></span>
-  <!--USER -->
-  <label for="user" class="sr-only">User</label>
-  <input type="text" id="user" class="form-control" placeholder="Usuario" required="" autofocus="" name="user">
-  <!--EMAIL -->
-  <label for="email" class="sr-only">email</label>
-  <input type="email" id="email" class="form-control" placeholder="Correo" required="" autofocus="" name="email">
-  <!--CSRF -->
-  <input type="hidden" name="<%= constants.csrf.key %>" value="<%= constants.csrf.key %>">
-  <!--PASS -->
-  <label for="inputPassword" class="sr-only">Password</label>
-  <input type="password" id="inputPassword" class="form-control" placeholder="Contraseña" required="" name="password">
-  <!--PASS -->
-  <label for="inputPassword2" class="sr-only">Password</label>
-  <input type="password" id="inputPassword2" class="form-control" placeholder="Repetir Contraseña" required="" name="password2">
-  <!--MESSAGE-->
-  <p class="<%= messageColor %> message" style="margin-top:10px;" id="message"><%= message %></p>
-  <!--BUTTON -->
-  <button class="btn btn-lg btn-primary btn-block" type="submit">
-    Crear Usuario
-  </button>
-  <!--FooTER LOGIN NAV -->
-  <div class="link-login">
-    <a class="" href="/login">
-      Ingresar
-    </a>
-    <a id="forgotpassword" class="pull-right" href="/login/forgot-password">
-      Olvidó su Contraseña
-    </a>
-  </div>
-  <p class="mt-5 mb-3 text-muted">Powered By <a href="http://softweb.pe/"> Softtware Web Perú</a> © 2017-2018</p>
-</form>
-<!-- FORGOT PASSWORD -->
-<form class="form-signin" action="/forgot-password" method="post" id="forgot-password" style="display: none;">
-  <h1 class="h3 mb-3 font-weight-normal">Recuperar Contraseña</h1>
-  <input type="hidden" name="key" value="value">
-  <span class="extraData"></span>
-  <!--EMAIL -->
-  <label for="email" class="sr-only">email</label>
-  <input type="text" id="email" class="form-control" placeholder="Correo" required="" autofocus="" name="email">
-  <!--CSRF -->
-  <input type="hidden" name="<%= constants.csrf.key %>" value="<%= constants.csrf.key %>">
-  <!--MESSAGE-->
-  <p class="<%= messageColor %> message" style="margin-top:10px;" id="message"><%= message %></p>
-  <!--BUTTON -->
-  <button class="btn btn-lg btn-primary btn-block" type="submit" disabled>
-    Enviar Solicitud
-  </button>
-  <!--FooTER LOGIN NAV -->
-  <div class="link-login">
-    <a class="" href="/login">
-      Ingresar
-    </a>
-    <a class="pull-right" href="/login/sign-in">
-      Registrarse
-    </a>
-  </div>
-  <p class="mt-5 mb-3 text-muted">Powered By <a href="http://softweb.pe/"> Softtware Web Perú</a> © 2017-2018</p>
-</form>
-<%- include('../partials/blank_footer') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/dist/<%= (process.env.ENV == 'server') ? 'login.min': 'login' %>.css">
+  <title><%= title %></title>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="/dist/<%= (process.env.ENV == 'server') ? 'login.min': 'login' %>.js"></script>
+</body>
+</html>

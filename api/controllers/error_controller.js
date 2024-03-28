@@ -15,7 +15,6 @@ router.get('/access/:num', (req, res, next) => {
   if (!registeredErrors.includes(errorNumber)) {
     errorNumber = '404';
   }
-  console.log(constants);
   // Respuesta
   const locals = {
     constants: constants,

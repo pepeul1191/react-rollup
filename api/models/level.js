@@ -1,16 +1,16 @@
-const Sequelize = require('sequelize');
-var db = require('../../config/database');
+import Sequelize from 'sequelize';
+import db from '../../config/database.js';
 
 const Level = db.define('levels', {
-	id: { 
+  id: { 
     type: Sequelize.INTEGER, 
     primaryKey: true, 
     autoIncrement: true ,
   },
-	name: { 
+  name: { 
     type: Sequelize.STRING, 
     allowNull: false,  
   },
 });
 
-module.exports = Level;
+export default Level;

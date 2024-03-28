@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-var db = require('../../config/database');
+var db = require('../../../config/database');
 
 module.exports = db.define('pokemons', {
 	id: { 

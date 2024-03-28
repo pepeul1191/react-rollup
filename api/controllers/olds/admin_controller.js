@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var constants = require('../../config/constants')();
-var helpers = require('../../config/helpers');
-const sessionTrue = require('../middlewares/session_true');
-const { indexCss, indexJs } = require('../helpers/admin_helper');
+var constants = require('../../../config/constants')();
+var helpers = require('../../../config/helpers');
+const sessionTrue = require('../../middlewares/session_true');
+const { indexCss, indexJs } = require('../../helpers/admin_helper');
 
 router.get('/', sessionTrue, (req, res, next) => {
   // response

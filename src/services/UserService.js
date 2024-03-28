@@ -15,10 +15,12 @@ export const validate = (user, password) => {
   // do request
   return fetch(`${BASE_URL}user/validate`, requestOptions)
     .then(response => {
-      //console.log(response)
       if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+        return response.text().then(errorText => {
+          console.error(response.status, errorText);
+          throw new Error('Ha ocurrido un error no controlado');
+        });
+      } 
       return response.json();
     })
     .catch(error => {

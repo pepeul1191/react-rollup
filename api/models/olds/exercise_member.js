@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const Exercise = require('./exercise');
-const Member = require('./member');
-var db = require('../../config/database');
+const Member = require('../member');
+var db = require('../../../config/database');
 
 const ExerciseMember = db.define('exercises_members', {
   id: { 

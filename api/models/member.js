@@ -1,14 +1,14 @@
-const Sequelize = require('sequelize');
-const Level = require('./level');
-var db = require('../../config/database');
+import Sequelize from 'sequelize';
+import db from '../../config/database.js';
+import Level from './level.js';
 
-const Member =db.define('members', {
-	id: { 
+const Member = db.define('members', {
+  id: { 
     type: Sequelize.INTEGER, 
     primaryKey: true, 
     autoIncrement: true ,
   },
-	code: { 
+  code: { 
     type: Sequelize.INTEGER, 
     allowNull: false,  
   },
@@ -40,4 +40,4 @@ const Member =db.define('members', {
 
 Member.belongsTo(Level, { foreignKey: 'level_id' });
 
-module.exports = Member;
+export default Member;

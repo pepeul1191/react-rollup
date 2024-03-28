@@ -1,5 +1,5 @@
 var express = require('express');
-const Exercise = require('../models/exercise');
+const Exercise = require('../../models/exercise');
 var router = express.Router();
 
 router.get('/list', (req, res, next) => {

@@ -1,14 +1,14 @@
-const Sequelize = require('sequelize');
-var db = require('../../config/database');
-const Member = require('./member')
+import Sequelize from 'sequelize';
+import db from '../../config/database.js';
+import Member from './member.js';
 
 const User = db.define('users', {
-	id: { 
+  id: { 
     type: Sequelize.INTEGER, 
     primaryKey: true, 
     autoIncrement: true ,
   },
-	user: { 
+  user: { 
     type: Sequelize.STRING, 
     allowNull: false,  
   },
@@ -16,9 +16,8 @@ const User = db.define('users', {
     type: Sequelize.STRING, 
     allowNull: false,  
   },
-
 });
 
 User.belongsTo(Member, { foreignKey: 'member_id' });
 
-module.exports = User;
+export default User;

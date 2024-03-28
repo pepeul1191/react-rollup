@@ -25,8 +25,7 @@ class Index extends Component {
     if (token != null) {
       loginCheck()
         .then(data => {
-          // console.log(data); alert();
-          if (data.message == true){
+          if (data.success == true){
             // token time expired, continue to login
             this.setState({
               isValidJWT: true,
@@ -54,7 +53,7 @@ class Index extends Component {
         .then(data => {
           let continueToApp = false;
           let timeout = 4500;
-          if (data.status === 'error-404' || data.status === 'error-500') {
+          if (!data.success) {
             this.setState({
               messageClass: 'text-danger',
               message: data.message,
@@ -75,13 +74,28 @@ class Index extends Component {
           setTimeout(() => {
             this.setState({ message: '' });
             if (continueToApp) {
-              localStorage.setItem('jwtToken', data.message);
+              localStorage.setItem('jwtToken', data.data);
               window.location.href = '/';
             }
           }, timeout);
         })
         .catch(error => {
-          console.error("Error:", error);
+          console.error(error);
+          this.setState({ 
+            message: 'Ocurrió un error al validar el usuario',
+            messageClass: 'text-danger' 
+          });
+          setTimeout(() => {
+            this.setState({ 
+              message: '', 
+              messageClass: '' 
+            });
+          }, 5000);
+          setTimeout(() => {
+            this.setState({ 
+              disabled: false, 
+            });
+          }, 1500);
         });
     } else {
       if (this.state.user === '') {
@@ -96,6 +110,9 @@ class Index extends Component {
       setTimeout(() => {
         this.setState({ message: '', messageClass: '' });
       }, 6000);
+      setTimeout(() => {
+        this.setState({ disabled: false });
+      }, 2000);
     }
   };
 

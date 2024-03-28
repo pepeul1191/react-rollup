@@ -1,13 +1,13 @@
-CREATE TABLE IF NOT EXISTS "schema_migrations" (version varchar(128) primary key);
-CREATE TABLE users (
-  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-  user VARCHAR(30),
-  password VARCHAR(40) NOT NULL,
-  image_url VARCHAR(50) NOT NULL,
-  created_at DATETIME NOT NULL,
-  updated_at DATETIME NOT NULL
-);
--- Dbmate schema migrations
 INSERT INTO "schema_migrations" (version) VALUES
-  ('20240325233532'),
-  ('20240325233538');
+  ('20231021124813'),
+  ('20231021124919'),
+  ('20231021124936'),
+  ('20231021124945'),
+  ('20231021130012'),
+  ('20231021130222'),
+  ('20231021141030'),
+  ('20231021141253'),
+  ('20231021141727'),
+  ('20231021142140'),
+  ('20231021142351'),
+  ('20231021142401');

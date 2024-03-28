@@ -1,8 +1,8 @@
 var express = require('express');
-var db = require('../../config/database');
-const User = require('../models/user');
-const ExerciseMember = require('../models/exercise_member');
-const Exercise = require('../models/exercise');
+var db = require('../../../config/database');
+const User = require('../../models/user');
+const ExerciseMember = require('../../models/exercise_member');
+const Exercise = require('../../models/exercise');
 var router = express.Router();
 
 router.get('/exercises_body_parts', (req, res, next) => {

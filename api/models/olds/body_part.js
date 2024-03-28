@@ -1,14 +1,16 @@
 const Sequelize = require('sequelize');
-var db = require('../../config/database');
+var db = require('../../../config/database');
 
-module.exports = db.define('carrers', {
-	id: { 
+const BodyPart = db.define('body_parts', {
+  id: { 
     type: Sequelize.INTEGER, 
     primaryKey: true, 
     autoIncrement: true ,
   },
-	name: { 
+  name: { 
     type: Sequelize.STRING, 
     allowNull: false,  
   },
 });
+
+module.exports = BodyPart;

@@ -1,16 +1,18 @@
 const Sequelize = require('sequelize');
-var db = require('../../config/database');
+var db = require('../../../config/database');
 
-const BodyPart = db.define('body_parts', {
-  id: { 
+module.exports = db.define('students', {
+	id: { 
     type: Sequelize.INTEGER, 
     primaryKey: true, 
     autoIncrement: true ,
   },
-  name: { 
+	name: { 
+    type: Sequelize.STRING, 
+    allowNull: false,  
+  },
+  code: { 
     type: Sequelize.STRING, 
     allowNull: false,  
   },
 });
-
-module.exports = BodyPart;
