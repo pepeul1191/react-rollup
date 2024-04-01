@@ -13,8 +13,7 @@ import cors from 'cors';
 
 // Inicialización de Express
 const app = express();
-const __dirname = new URL('.', import.meta.url).pathname;
-//expressWs(app);
+const __dirname = new URL('.', import.meta.url).pathname[0] == '/' ?  new URL('.', import.meta.url).pathname.substring (1) : new URL('.', import.meta.url).pathname;//expressWs(app);
 // Configuración del motor de vistas y middlewares
 app.set('views', join(process.cwd(), 'views'));
 app.set('view engine', 'ejs');

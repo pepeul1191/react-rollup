@@ -8,6 +8,8 @@
     "dev2": "npx rollup -c rollup.config.js -w & rerun app.rb -ignore 'src' 'public'",
     "dev": "npx rollup -c rollup.config.js -w & node ./node_modules/nodemon/bin/nodemon.js app.js --ignore './public/' --ignore './src/'",
     "build": "rollup -c",
+    "front": "npx rollup -c rollup.config.js -w",
+    "back": "node ./node_modules/nodemon/bin/nodemon.js app.js --ignore './public/' --ignore './src/'",
     "dbmate:new": "npx dbmate -d \"db/migrations\" -e \"DB\" new ",
     "dbmate:up": "npx dbmate -d \"db/migrations\" -e \"DB\" up",
     "dbmate:rollback": "npx dbmate -d \"db/migrations\" -e \"DB\" rollback"
