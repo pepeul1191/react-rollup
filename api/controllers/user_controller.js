@@ -3,6 +3,7 @@ import { Op } from 'sequelize';
 import User from '../models/user.js';
 import Member  from '../models/member.js';
 import { create as createToken, get as getJWT } from '../helpers/jwt_helper.js';
+import { randomStringNumber } from '../helpers/app_helper.js';
 
 const router = express.Router();
 
@@ -83,7 +84,43 @@ router.post('/login-check', async (req, res) => {
   }
 });
 
-router.post('/reset_password', async (req, res) => {
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const response = {
+      success: false,
+      message: '',
+      data: ''
+    };
+    let status = 200;
+    const foundMember = await Member.findOne({
+      where: { 
+        email: email
+      }
+    });
+    if (foundMember) {
+      response.success = true;
+      response.message = 'Correo para cambiar su contraseña enviado.';
+      response.data = {};
+      await User.update(
+        { reset_key: randomStringNumber(20) }, // Nuevos valores que quieres establecer
+        { where: { member_id: foundMember.id } } // Condiciones para encontrar el usuario por su ID
+      );
+    } else {
+      response.message = 'Correo no encontrado';
+    }
+    res.status(status).send(JSON.stringify(response));
+  } catch (error) {
+    console.error('Error al realizar la consulta:', error);
+    const response = {
+      success: false,
+      message: 'Error en encontrar al miembro.',
+      data: error
+    };
+    res.status(501).send(JSON.stringify(response));
+  }
+
+
   try {
     const { dni, email } = req.body;
     const response = {

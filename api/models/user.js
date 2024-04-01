@@ -16,6 +16,14 @@ const User = db.define('users', {
     type: Sequelize.STRING, 
     allowNull: false,  
   },
+  activation_key: { 
+    type: Sequelize.STRING, 
+    allowNull: false,  
+  },
+  reset_key: { 
+    type: Sequelize.STRING, 
+    allowNull: false,  
+  },
 });
 
 User.belongsTo(Member, { foreignKey: 'member_id' });
