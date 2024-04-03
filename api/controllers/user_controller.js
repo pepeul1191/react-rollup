@@ -119,40 +119,6 @@ router.post('/reset-password', async (req, res) => {
     };
     res.status(501).send(JSON.stringify(response));
   }
-
-
-  try {
-    const { dni, email } = req.body;
-    const response = {
-      success: false,
-      message: '',
-      data: ''
-    };
-    let status = 404;
-    const foundMember = await Member.findOne({
-      where: { 
-        dni: dni,
-        email: email
-      }
-    });
-    if (foundMember) {
-      response.success = true;
-      response.message = 'Se ha enviando un correo para cambiar de contraseña';
-      response.data = 'Miembro encontrado';
-      status = 200;
-    } else {
-      response.message = 'Miembro no encontrado';
-    }
-    res.status(status).send(JSON.stringify(response));
-  } catch (error) {
-    console.error('Error al realizar la consulta:', error);
-    const response = {
-      success: false,
-      message: 'Error en encontrar al miembro',
-      data: error
-    };
-    res.status(501).send(JSON.stringify(response));
-  }
 });
 
 router.post('/create', async (req, res) => {

@@ -28,6 +28,33 @@ export const validate = (user, password) => {
     });
 };
 
+export const sendEmail = (email) => {
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer yourAccessTokenHere',
+    },
+    body: JSON.stringify({
+      email: email,
+    })
+  };
+  // do request
+  return fetch(`${BASE_URL}user/reset-password`, requestOptions)
+    .then(response => {
+      if (!response.ok) {
+        return response.text().then(errorText => {
+          console.error(response.status, errorText);
+          throw new Error('Ha ocurrido un error no controlado');
+        });
+      } 
+      return response.json();
+    })
+    .catch(error => {
+      throw error; // Re-lanzar el error para manejarlo en el componente
+    });
+};
+
 export const loginCheck = () => {
   const requestOptions = {
     method: 'POST',
