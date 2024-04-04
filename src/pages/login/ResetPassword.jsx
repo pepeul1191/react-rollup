@@ -14,6 +14,7 @@ class ResetPassword extends Component {
       messageClass: '',
       disabled: false,
       isValidJWT: false,
+      isValidEmail: true,
     };
     this.emailInputRef = React.createRef();
   }
@@ -150,8 +151,10 @@ class ResetPassword extends Component {
               value={this.email}
               onChange={(e) => this.setState({ email: e.target.value })}
               ref={this.emailInputRef}
+              className="is-invalid"
             />
           </Form.Group>
+          <Form.Text className="text-danger">Por favor, ingrese un correo electrónico válido.</Form.Text>
           <Form.Label className={`${messageClass} mt-2 text-center`}>{message}</Form.Label>
           <Button variant="primary" type="submit" className="w-100 mt-2">
             Enviar Solicitud

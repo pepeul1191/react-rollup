@@ -16,11 +16,29 @@ class SignIn extends Component {
       user: '',
       password: '',
       passwordRepeted: '',
+      dni: '',
+      code: '',
+      isValidEmail: true,
+      isValidDNI: true,
+      isValidCode: true,
+      codeMessege: '',
+      isValidUser: true,
+      isValidPassword1: true,
+      isValidPassword2: true,
+      errors: {
+        dni: '',
+        code: '',
+        user: '',
+        password1: '',
+        password2: '',
+      },
     };
     this.emailInputRef = React.createRef();
     this.userInputRef = React.createRef();
     this.passwordInputRef = React.createRef();
     this.passwordInputRepeteadRef = React.createRef();
+    this.dniInputRef = React.createRef();
+    this.codeInputRef = React.createRef();
   }
 
   componentDidMount() {
@@ -42,8 +60,58 @@ class SignIn extends Component {
   }
 
   validateForm() {
-    
+    this.setState({
+      isValidDNI: !this.state.isValidDNI,
+    });
     return false;
+  }
+
+  handleChange = (stateElement, value) => {
+    this.setState({ [stateElement]: value }, () => {
+      this.validateField(stateElement, value);
+    });
+  }
+
+  validateField(field, value){
+    let state = { ...this.state };
+    switch (field) {
+      case 'dni':
+        if (value == '') {
+          state.isValidDNI = false;
+          state.errors.dni = 'No puede estar vacío';
+        }else if ((/^\d{8}$/).test(value) == false) {
+          state.isValidDNI = false;
+          state.errors.dni = 'Formato no válido';
+        }else{
+          state.isValidDNI = true;
+          state.errors.dni = '';
+        }
+        break;
+      case 'code':
+        if (value == '') {
+          state.isValidCode = false;
+          state.errors.code = 'No puede estar vacío';
+        }else if (isNaN(value) != false) {
+          state.isValidCode = false;
+          state.errors.code = 'No puede usar letras, sólo números';
+        }else if (value.includes(' ')) {
+          state.isValidCode = false;
+          state.errors.code = 'No puede espaciar el código';
+        }else if(value.toString().length != 8){
+          state.isValidCode = false;
+          state.errors.code = 'Tiene que ser un número de 8 caracteres';
+        }else{
+          state.isValidCode = true;
+          state.errors.code = '';
+        }
+        break;
+      case 'email':
+        errors.email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Ingrese un correo electrónico válido';
+        break;
+      default:
+        break;
+    }
+    this.setState(state);
   }
 
   submit = (event) => {
@@ -54,7 +122,7 @@ class SignIn extends Component {
   };
 
   render() {
-    const {message, messageClass, disabled, isValidJWT, user, password, passwordRepeted} = this.state;
+    const {message, messageClass, disabled, isValidJWT, code, dni, user, password, passwordRepeted, isValidEmail, isValidDNI, isValidCode, isValidUser, isValidPassword1, isValidPassword2, errors} = this.state;
     if (isValidJWT) {
       window.location.href = '/';
       return null;
@@ -70,34 +138,38 @@ class SignIn extends Component {
               <Row className="mt-2" style={{ paddingLeft: '10px', paddingRight: '10px' }}>
                 <Col>
                   <div className="left-aligned-content" style={{ marginRight: '5px' }}>
-                    <Form.Group controlId="formBasicEmail">
+                    <Form.Group controlId="formDNI">
                       <Form.Label>DNI</Form.Label>
                       <Form.Control
                         type="text"
                         placeholder="Ingrese su DNI"
-                        value={this.state.user}
-                        onChange={(e) => this.setState({ user: e.target.value })}
+                        value={dni}
+                        onChange={(e) => this.handleChange('dni', e.target.value)}
                         ref={this.userInputRef}
+                        className={!isValidDNI ? 'is-invalid' : ''}
                       />
+                      {!isValidDNI ? <Form.Text className="text-danger">{errors.dni}</Form.Text> : ''}
                     </Form.Group>
                   </div>
                 </Col>
                 <Col>
                   <div className="left-aligned-content" style={{ marginLeft: '5px' }}>
-                    <Form.Group controlId="formBasicEmail">
+                    <Form.Group controlId="formCode">
                       <Form.Label>Código</Form.Label>
                       <Form.Control
                         type="text"
                         placeholder="Ingrese su código"
-                        value={this.state.user}
-                        onChange={(e) => this.setState({ user: e.target.value })}
-                        ref={this.userInputRef}
+                        value={code}
+                        onChange={(e) => this.handleChange('code', e.target.value)}
+                        ref={this.userInputRef} 
+                        className={!isValidCode ? 'is-invalid': ''}
                       />
                     </Form.Group>
+                    {!isValidCode ? <Form.Text className="text-danger">{errors.code}</Form.Text> : ''}
                   </div>
                 </Col>
               </Row>
-              <Form.Group controlId="formBasicEmail" className="mt-1">
+              <Form.Group controlId="formUser" className="mt-1">
                 <Form.Label>Usuario</Form.Label>
                 <Form.Control
                   type="text"
@@ -107,7 +179,7 @@ class SignIn extends Component {
                   ref={this.userInputRef}
                 />
               </Form.Group>
-              <Form.Group controlId="formBasicPassword" className="mt-1">
+              <Form.Group controlId="formPassword1" className="mt-1">
                 <Form.Label>Contraseña</Form.Label>
                 <Form.Control
                   type="password"
@@ -117,7 +189,7 @@ class SignIn extends Component {
                   ref={this.passwordInputRef}
                 />
               </Form.Group>
-              <Form.Group controlId="formBasicPassword" className="mt-1">
+              <Form.Group controlId="formPassword2" className="mt-1">
                 <Form.Label>Repetir Contraseña</Form.Label>
                 <Form.Control
                   type="password"
