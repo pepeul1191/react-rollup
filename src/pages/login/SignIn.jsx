@@ -15,7 +15,7 @@ class SignIn extends Component {
       isValidJWT: false,
       user: '',
       password: '',
-      passwordRepeted: '',
+      password2: '',
       dni: '',
       code: '',
       isValidEmail: true,
@@ -81,7 +81,7 @@ class SignIn extends Component {
           state.errors.dni = 'No puede estar vacío';
         }else if ((/^\d{8}$/).test(value) == false) {
           state.isValidDNI = false;
-          state.errors.dni = 'Formato no válido';
+          state.errors.dni = 'Son son 8 números';
         }else{
           state.isValidDNI = true;
           state.errors.dni = '';
@@ -105,6 +105,36 @@ class SignIn extends Component {
           state.errors.code = '';
         }
         break;
+      case 'password2':
+        if(state.isValidPassword1){
+          if (value != state.password && state.isValidPassword1) {
+            state.isValidPassword2 = false;
+            state.errors.password2 = 'Contraseñas no coinciden';
+          }else{
+            state.isValidPassword2 = true;
+            state.errors.password2 = '';
+          }
+        }else{
+          state.isValidPassword1 = false;
+          state.isValidPassword2 = false;
+          state.errors.password2 = 'La primera contraseña no es segura';
+        }
+        break;
+      case 'password':
+        if (value == '') {
+          state.isValidPassword1 = false;
+          state.isValidPassword2 = true;
+          state.errors.password2 = 'No puede estar vacío';
+        }else if (! /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-+=(){}[\]:;<>,./\\|~^"'])[\w@$!%*?&_\-+=(){}[\]:;<>,./\\|~^"']{8,}$/.test(value) ) {
+          state.isValidPassword1 = false;
+          state.isValidPassword2 = false;
+          state.errors.password2 = 'Contraseña no segura, debe de tener al menos 8 caracteres, un caracter especial, un número, letras minusculas y mayúsculas';
+        }else{
+          state.isValidPassword1 = true;
+          state.isValidPassword2 = true;
+          state.errors.password2 = '';
+        }
+        break;
       case 'email':
         errors.email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Ingrese un correo electrónico válido';
         break;
@@ -122,7 +152,7 @@ class SignIn extends Component {
   };
 
   render() {
-    const {message, messageClass, disabled, isValidJWT, code, dni, user, password, passwordRepeted, isValidEmail, isValidDNI, isValidCode, isValidUser, isValidPassword1, isValidPassword2, errors} = this.state;
+    const {message, messageClass, disabled, isValidJWT, code, dni, user, password, password2, isValidEmail, isValidDNI, isValidCode, isValidUser, isValidPassword1, isValidPassword2, errors} = this.state;
     if (isValidJWT) {
       window.location.href = '/';
       return null;
@@ -185,7 +215,8 @@ class SignIn extends Component {
                   type="password"
                   placeholder="Ingrese su contraseña"
                   value={this.password}
-                  onChange={(e) => this.setState({ password: e.target.value })}
+                  onChange={(e) => this.handleChange('password', e.target.value)}
+                  className={!isValidPassword1 ? 'is-invalid': ''}
                   ref={this.passwordInputRef}
                 />
               </Form.Group>
@@ -194,11 +225,13 @@ class SignIn extends Component {
                 <Form.Control
                   type="password"
                   placeholder="Repita su contraseña"
-                  value={this.passwordRepeted}
-                  onChange={(e) => this.setState({ password: e.target.value })}
+                  value={this.password2}
+                  onChange={(e) => this.handleChange('password2', e.target.value)}
+                  className={!isValidPassword2 ? 'is-invalid': ''}
                   ref={this.passwordInputRepeteadRef}
                 />
               </Form.Group>
+              {!isValidPassword2 ? <Form.Text className="text-danger">{errors.password2}</Form.Text> : ''}
               <Form.Label className={`${messageClass} mt-2 text-center`}>{message}</Form.Label>
               <Button variant="primary" type="submit" className="w-100 mt-3" disabled={disabled}>
                 Crear Usuario
