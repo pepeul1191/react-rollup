@@ -1,5 +1,6 @@
 // Importación de módulos
 import express from 'express';
+import os from 'os';
 import { join } from 'path';
 import cookieParser from 'cookie-parser';
 import cookieSession from 'cookie-session';
@@ -10,10 +11,11 @@ import error404 from './api/middlewares/error_404.js';
 //import preResponse from './api/middlewares/pre_response';
 import cors from 'cors';
 //import expressWs from 'express-ws';
-
+const osName = os.platform();
 // Inicialización de Express
 const app = express();
-const __dirname = new URL('.', import.meta.url).pathname[0] == '/' ?  new URL('.', import.meta.url).pathname.substring (1) : new URL('.', import.meta.url).pathname;//expressWs(app);
+const __dirname = (osName != 'linux' ?  new URL('.', import.meta.url).pathname.substring (1) : new URL('.', import.meta.url).pathname);
+//expressWs(app);
 // Configuración del motor de vistas y middlewares
 app.set('views', join(process.cwd(), 'views'));
 app.set('view engine', 'ejs');
