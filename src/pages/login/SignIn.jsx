@@ -60,9 +60,15 @@ class SignIn extends Component {
   }
 
   validateForm() {
-    this.setState({
-      isValidDNI: !this.state.isValidDNI,
-    });
+    let state = { ...this.state };
+    if(state.user != ''){
+      state.isValidUser = true;
+      state.errors.user = '';
+    }else{
+      state.isValidUser = false;
+      state.errors.user = 'Debe de ingresar su usuario';
+    }
+    this.setState(state);
     return false;
   }
 
@@ -206,9 +212,11 @@ class SignIn extends Component {
                   placeholder="Ingrese su usuario"
                   value={this.user}
                   onChange={(e) => this.setState({ user: e.target.value })}
+                  className={!isValidUser ? 'is-invalid': ''}
                   ref={this.userInputRef}
                 />
               </Form.Group>
+              {!isValidUser ? <Form.Text className="text-danger">{errors.user}</Form.Text> : ''}
               <Form.Group controlId="formPassword1" className="mt-1">
                 <Form.Label>Contraseña</Form.Label>
                 <Form.Control
