@@ -6,7 +6,7 @@ import { validate, loginCheck } from '../../services/UserService';
 
 class Index extends Component {
   constructor(props) {
-    console.log('constructor')
+    document.title = 'Ingresar al Sistema';
     super(props);
     this.state = {
       user: '',

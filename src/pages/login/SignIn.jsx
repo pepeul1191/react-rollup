@@ -6,7 +6,7 @@ import { sendEmail, loginCheck } from '../../services/UserService';
 
 class SignIn extends Component {
   constructor(props) {
-    console.log('constructor')
+    document.title = 'Crear Cuenta';
     super(props);
     this.state = {
       message: '',

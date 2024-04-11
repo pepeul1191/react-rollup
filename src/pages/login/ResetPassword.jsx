@@ -6,7 +6,7 @@ import { sendEmail, loginCheck } from '../../services/UserService';
 
 class ResetPassword extends Component {
   constructor(props) {
-    console.log('constructor')
+    document.title = 'Cambiar Contraseña';
     super(props);
     this.state = {
       email: '',
