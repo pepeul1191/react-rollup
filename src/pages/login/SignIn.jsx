@@ -2,7 +2,7 @@ import React, { useState, Component } from 'react';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import LogoSVG  from './../../assets/svg/bBOV3E01.svg';
-import { sendEmail, loginCheck } from '../../services/UserService';
+import { sendEmail, loginCheck, createFromLogin } from '../../services/UserService';
 
 class SignIn extends Component {
   constructor(props) {
@@ -12,19 +12,23 @@ class SignIn extends Component {
       message: '',
       messageClass: '',
       disabled: false,
-      isValidJWT: false,
-      user: '',
-      password: '',
-      password2: '',
-      dni: '',
-      code: '',
-      isValidEmail: true,
-      isValidDNI: true,
-      isValidCode: true,
+      form: {
+        user: '',
+        password: '',
+        password2: '',
+        dni: '',
+        code: ''
+      },
+      isValid:{
+        email: true,
+        dni: true,
+        code: true,
+        user: true,
+        password1: true,
+        password2: true,
+      },
+      validJWT: false,
       codeMessege: '',
-      isValidUser: true,
-      isValidPassword1: true,
-      isValidPassword2: true,
       errors: {
         dni: '',
         code: '',
@@ -62,18 +66,24 @@ class SignIn extends Component {
   validateForm() {
     let state = { ...this.state };
     if(state.user != ''){
-      state.isValidUser = true;
+      state.isValid.user = true;
       state.errors.user = '';
     }else{
-      state.isValidUser = false;
+      state.isValid.user = false;
       state.errors.user = 'Debe de ingresar su usuario';
     }
     this.setState(state);
-    return false;
+    var x = Object.values(this.state.isValid).every(value => value === true);
+    console.log(x);
+    return Object.values(this.state.isValid).every(value => value === true);
   }
 
   handleChange = (stateElement, value) => {
-    this.setState({ [stateElement]: value }, () => {
+    const updatedForm = {
+      ...this.state.form,
+      [stateElement]: value
+    };
+    this.setState({ form: updatedForm }, () => {
       this.validateField(stateElement, value);
     });
   }
@@ -83,66 +93,68 @@ class SignIn extends Component {
     switch (field) {
       case 'dni':
         if (value == '') {
-          state.isValidDNI = false;
+          state.isValid.dni = false;
           state.errors.dni = 'No puede estar vacío';
         }else if ((/^\d{8}$/).test(value) == false) {
-          state.isValidDNI = false;
+          state.isValid.dni = false;
           state.errors.dni = 'Son son 8 números';
         }else{
-          state.isValidDNI = true;
+          state.isValid.dni = true;
           state.errors.dni = '';
         }
         break;
       case 'code':
         if (value == '') {
-          state.isValidCode = false;
+          state.isValid.code = false;
           state.errors.code = 'No puede estar vacío';
         }else if (isNaN(value) != false) {
-          state.isValidCode = false;
+          state.isValid.code = false;
           state.errors.code = 'No puede usar letras, sólo números';
         }else if (value.includes(' ')) {
-          state.isValidCode = false;
+          state.isValid.code = false;
           state.errors.code = 'No puede espaciar el código';
         }else if(value.toString().length != 8){
-          state.isValidCode = false;
+          state.isValid.code = false;
           state.errors.code = 'Tiene que ser un número de 8 caracteres';
         }else{
-          state.isValidCode = true;
+          state.isValid.code = true;
           state.errors.code = '';
         }
         break;
       case 'password2':
-        if(state.isValidPassword1){
-          if (value != state.password && state.isValidPassword1) {
-            state.isValidPassword2 = false;
+        if(state.isValid.password1){
+          if (value != state.form.password && state.isValid.password1) {
+            state.isValid.password2 = false;
             state.errors.password2 = 'Contraseñas no coinciden';
           }else{
-            state.isValidPassword2 = true;
+            state.isValid.password2 = true;
             state.errors.password2 = '';
           }
         }else{
-          state.isValidPassword1 = false;
-          state.isValidPassword2 = false;
+          state.isValid.password1 = false;
+          state.isValid.password2 = false;
           state.errors.password2 = 'La primera contraseña no es segura';
         }
         break;
       case 'password':
         if (value == '') {
-          state.isValidPassword1 = false;
-          state.isValidPassword2 = true;
+          state.isValid.password1 = false;
+          state.isValid.password2 = true;
           state.errors.password2 = 'No puede estar vacío';
         }else if (! /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-+=(){}[\]:;<>,./\\|~^"'])[\w@$!%*?&_\-+=(){}[\]:;<>,./\\|~^"']{8,}$/.test(value) ) {
-          state.isValidPassword1 = false;
-          state.isValidPassword2 = false;
+          state.isValid.password1 = false;
+          state.isValid.password2 = false;
           state.errors.password2 = 'Contraseña no segura, debe de tener al menos 8 caracteres, un caracter especial, un número, letras minusculas y mayúsculas';
         }else{
-          state.isValidPassword1 = true;
-          state.isValidPassword2 = true;
+          state.isValid.password1 = true;
+          state.isValid.password2 = true;
           state.errors.password2 = '';
         }
         break;
       case 'email':
         errors.email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? '' : 'Ingrese un correo electrónico válido';
+        break;
+      case 'user':
         break;
       default:
         break;
@@ -153,12 +165,21 @@ class SignIn extends Component {
   submit = (event) => {
     event.preventDefault();
     if (this.validateForm()) {
-      
+      let state = { ...this.state };
+      createFromLogin(state.form).then(data => {
+        console.log(data);
+        if (data.success == true){
+
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });   
     }
   };
 
   render() {
-    const {message, messageClass, disabled, isValidJWT, code, dni, user, password, password2, isValidEmail, isValidDNI, isValidCode, isValidUser, isValidPassword1, isValidPassword2, errors} = this.state;
+    const {message, messageClass, disabled, isValidJWT, form, isValid, errors} = this.state;
     if (isValidJWT) {
       window.location.href = '/';
       return null;
@@ -179,12 +200,12 @@ class SignIn extends Component {
                       <Form.Control
                         type="text"
                         placeholder="Ingrese su DNI"
-                        value={dni}
+                        value={form.dni}
                         onChange={(e) => this.handleChange('dni', e.target.value)}
                         ref={this.userInputRef}
-                        className={!isValidDNI ? 'is-invalid' : ''}
+                        className={!isValid.dni ? 'is-invalid' : ''}
                       />
-                      {!isValidDNI ? <Form.Text className="text-danger">{errors.dni}</Form.Text> : ''}
+                      {!isValid.dni ? <Form.Text className="text-danger">{errors.dni}</Form.Text> : ''}
                     </Form.Group>
                   </div>
                 </Col>
@@ -195,13 +216,13 @@ class SignIn extends Component {
                       <Form.Control
                         type="text"
                         placeholder="Ingrese su código"
-                        value={code}
+                        value={form.code}
                         onChange={(e) => this.handleChange('code', e.target.value)}
                         ref={this.userInputRef} 
-                        className={!isValidCode ? 'is-invalid': ''}
+                        className={!isValid.code ? 'is-invalid': ''}
                       />
                     </Form.Group>
-                    {!isValidCode ? <Form.Text className="text-danger">{errors.code}</Form.Text> : ''}
+                    {!isValid.code ? <Form.Text className="text-danger">{errors.code}</Form.Text> : ''}
                   </div>
                 </Col>
               </Row>
@@ -210,21 +231,21 @@ class SignIn extends Component {
                 <Form.Control
                   type="text"
                   placeholder="Ingrese su usuario"
-                  value={this.user}
-                  onChange={(e) => this.setState({ user: e.target.value })}
-                  className={!isValidUser ? 'is-invalid': ''}
+                  value={form.user}
+                  onChange={(e) => this.handleChange('user', e.target.value)}
+                  className={!isValid.user ? 'is-invalid': ''}
                   ref={this.userInputRef}
                 />
               </Form.Group>
-              {!isValidUser ? <Form.Text className="text-danger">{errors.user}</Form.Text> : ''}
+              {!isValid.user ? <Form.Text className="text-danger">{errors.user}</Form.Text> : ''}
               <Form.Group controlId="formPassword1" className="mt-1">
                 <Form.Label>Contraseña</Form.Label>
                 <Form.Control
                   type="password"
                   placeholder="Ingrese su contraseña"
-                  value={this.password}
+                  value={form.password}
                   onChange={(e) => this.handleChange('password', e.target.value)}
-                  className={!isValidPassword1 ? 'is-invalid': ''}
+                  className={!isValid.password1 ? 'is-invalid': ''}
                   ref={this.passwordInputRef}
                 />
               </Form.Group>
@@ -233,13 +254,13 @@ class SignIn extends Component {
                 <Form.Control
                   type="password"
                   placeholder="Repita su contraseña"
-                  value={this.password2}
+                  value={form.password2}
                   onChange={(e) => this.handleChange('password2', e.target.value)}
-                  className={!isValidPassword2 ? 'is-invalid': ''}
+                  className={!isValid.password2 ? 'is-invalid': ''}
                   ref={this.passwordInputRepeteadRef}
                 />
               </Form.Group>
-              {!isValidPassword2 ? <Form.Text className="text-danger">{errors.password2}</Form.Text> : ''}
+              {!isValid.password2 ? <Form.Text className="text-danger">{errors.password2}</Form.Text> : ''}
               <Form.Label className={`${messageClass} mt-2 text-center`}>{message}</Form.Label>
               <Button variant="primary" type="submit" className="w-100 mt-3" disabled={disabled}>
                 Crear Usuario
