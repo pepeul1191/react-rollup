@@ -158,4 +158,62 @@ router.post('/create', async (req, res) => {
   }
 });
 
+router.post('/login-create', async (req, res) => {
+  try {
+    const { dni, code, user, password } = req.body;
+    const response = {
+      success: false,
+      message: '',
+      data: ''
+    };
+    let status = 200;
+    const foundMember = await Member.findOne({
+      where: { 
+        [Op.and]: [
+          { dni: dni },
+          { code: code }
+        ]
+      }
+    });
+    if (foundMember) {
+      // check if user already exist, if exist, error. if not, create one if not
+      const foundUser = await User.findOne({
+        where: { 
+          member_id: foundMember.id 
+        }
+      });
+      if(foundUser){
+        response.success = false;
+        response.message = 'Miembro ya tiene un usuario asignado.';
+        response.data = {};
+      }else{
+        await User.create({
+          user: user,
+          password: password,
+          activation_key: randomStringNumber(20),
+          reset_key: randomStringNumber(20),
+          member_id: foundMember.id
+        });
+        response.success = true;
+        response.message = 'Usuario del miembro creado.';
+        response.data = {};
+      }
+    } else {
+      response.success = false;
+      response.message = 'Miembro no registrado.';
+      response.data = '';
+      status = 200;
+    }
+    res.status(status).send(JSON.stringify(response));
+  } catch (error) {
+    console.error('Error al realizar la consulta:', error);
+    const response = {
+      success: false,
+      message: 'Error en encontrar al miembro',
+      data: error
+    };
+    res.status(status).send(JSON.stringify(response));
+  }
+});
+
 export default router;
