@@ -209,7 +209,7 @@ router.post('/login-create', async (req, res) => {
     console.error('Error al realizar la consulta:', error);
     const response = {
       success: false,
-      message: 'Error en encontrar al miembro',
+      message: 'Error en crear el usuario del miembro',
       data: error
     };
     res.status(status).send(JSON.stringify(response));

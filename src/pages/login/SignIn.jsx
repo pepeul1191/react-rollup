@@ -169,11 +169,32 @@ class SignIn extends Component {
       createFromLogin(state.form).then(data => {
         console.log(data);
         if (data.success == true){
-
+          this.setState({ 
+            message: data.message, 
+            messageClass: 'text-success' 
+          });
+          setTimeout(() => {
+            this.setState({ message: '', messageClass: '' });
+          }, 6000);
+        }else{
+          this.setState({ 
+            message: data.message, 
+            messageClass: 'text-danger' 
+          });
+          setTimeout(() => {
+            this.setState({ message: '', messageClass: '' });
+          }, 6000);
         }
       })
       .catch(error => {
         console.error("Error:", error);
+        this.setState({ 
+          message: error.message, 
+          messageClass: 'text-danger' 
+        });
+        setTimeout(() => {
+          this.setState({ message: '', messageClass: '' });
+        }, 6000);
       });   
     }
   };
