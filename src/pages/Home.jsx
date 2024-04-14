@@ -23,7 +23,7 @@ const Home = () => {
               ref={dataTableRef}
               path="/template" 
               trs={[
-                {style: {display: 'none'}, type: 'label', key: 'id', },
+                {style: {display: 'none'}, type: 'id', key: 'id', },
                 {style: {}, type: 'input[text]', key: 'name', }, 
               ]}
               ths={[

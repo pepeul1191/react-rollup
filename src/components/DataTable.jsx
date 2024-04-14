@@ -95,6 +95,46 @@ class DataTable extends Component {
     });
   };
 
+  random = (length) => {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
+  addRow = (e) => {
+    const { trs, data } = this.state;
+    var tmp = {};
+    for(var key of Object.keys(trs)){
+      switch (trs[key].type) {
+        case 'id':
+          tmp[trs[key].key] = `tmp_${this.random(10)}`;
+          break;
+        case 'input[text]':
+          tmp[trs[key].key] = '';
+          break;
+        case 'autocomplete':
+          tmp[trs[key].key] = '';
+          break;
+        case 'input[select]':
+          tmp[trs[key].key] = 'E';
+          break;
+        case 'actions':
+          tmp[trs[key].key] = undefined;
+          break;
+        default:
+          break;
+      }
+    }
+    data.push(tmp)
+    this.setState({ 
+      data: data
+    });
+  }
+
   deleteRow = (e) => {
     const { data, rowKeyId, observer } = this.state;
     const rowId = e.target.parentNode.parentNode.firstChild.innerHTML;
@@ -193,7 +233,7 @@ class DataTable extends Component {
               <tr>
                 <td colSpan="5" style={{textAlign:'right'}}>
                   {(buttonAddRow) && (
-                    <button className="btn btn-primary"> <i className="fa fa-plus" style={{marginRight:'5px'}}></i>Agregar Registro</button>
+                    <button onClick={this.addRow} className="btn btn-primary"> <i className="fa fa-plus" style={{marginRight:'5px'}}></i>Agregar Registro</button>
                   )}
                 </td>
               </tr>
