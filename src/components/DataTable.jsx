@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
+import 'font-awesome/css/font-awesome.min.css';
 import './DataTable.css';
 
 class DataTable extends Component {
@@ -18,6 +19,8 @@ class DataTable extends Component {
       data: [],
       rowKeyId: (props.rowKeyId !== null && props.rowKeyId !== undefined) ? props.rowKeyId : 'id',
       observer: { new: [], edit: [], delete: []},
+      buttonAddRow: (props.buttonAddRow !== null && props.buttonAddRow !== undefined) ? props.buttonAddRow : false,
+      rowButtons: (props.rowButtons !== null && props.rowButtons !== undefined) ? props.rowButtons : [],
     };
     this.userInputRef = React.createRef();
   }
@@ -69,7 +72,7 @@ class DataTable extends Component {
       if(element[rowKeyId] == rowId){
         element[rowKey] = e.target.value;
       }
-      // obsever
+      // observer
       if(String(rowId).includes('tmp')){
         if(this.observerSearch(rowKeyId, rowId, observer.new) == false){
           observer.new.push({[rowKeyId]: rowId})
@@ -92,8 +95,39 @@ class DataTable extends Component {
     });
   };
 
+  deleteRow = (e) => {
+    const { data, rowKeyId, observer } = this.state;
+    const rowId = e.target.parentNode.parentNode.firstChild.innerHTML;
+    //console.log(rowId);
+    var tmpData = [];
+    data.forEach((element) => {
+      if(element[rowKeyId] != rowId){
+        tmpData.push(element)
+      }
+      // observer
+      if(this.observerSearch(rowKeyId, rowId, observer.new) != false){
+        var tmp = {[rowKeyId]: rowId};
+        observer.new = observer.new.filter(item => JSON.stringify(item) !== JSON.stringify(tmp));
+      }
+      if(this.observerSearch(rowKeyId, rowId, observer.edit) != false){
+        var tmp = {[rowKeyId]: rowId};
+        observer.edit = observer.edit.filter(item => JSON.stringify(item) !== JSON.stringify(tmp));
+        if(this.observerSearch(rowKeyId, rowId, observer.delete) == false){
+          observer.delete.push({[rowKeyId]: rowId});
+        }
+      }
+      if(this.observerSearch(rowKeyId, rowId, observer.delete) == false){
+        observer.delete.push({[rowKeyId]: rowId});
+      }
+    });
+    // update table's data
+    this.setState({ 
+      data: tmpData
+    });
+  }
+
   render() {
-    const { fetchURL, ths, data, trs } = this.state;
+    const { fetchURL, ths, data, trs, buttonAddRow, rowButtons } = this.state;
     return (
       <>
         <Table striped hover>
@@ -107,14 +141,15 @@ class DataTable extends Component {
           <tbody>
             {data.map((record, rowIndex) => (
               <tr key={rowIndex}>
+                {/* data td */}
                 {trs.map((row, colIndex) => {
                   if (row.type === 'id') {
                     return (
-                      <td key={colIndex}>{record[row.key]}</td>
+                      <td key={colIndex} style={row.style}>{record[row.key]}</td>
                     );
                   } else if (row.type === 'input[text]') {
                     return (
-                      <td key={colIndex}>
+                      <td key={colIndex} style={row.style}>
                         <input 
                           type="text" 
                           name="" id="" 
@@ -126,13 +161,44 @@ class DataTable extends Component {
                     );
                   } else {
                     return (
-                      <td key={colIndex}>{record[row.key]}</td>
+                      <td key={colIndex} style={row.style}>{record[row.key]}</td>
                     );
                   }
                 })}
+                {/* button td */}
+                {rowButtons == [] || ( 
+                  <td>
+                    {rowButtons.map((button, colIndex) => {
+                      if (button.type === 'delete') {
+                        return (
+                          <i key={colIndex} className="fa fa-times hover" style={button.style} aria-hidden="true" onClick={(e) => this.deleteRow(e)}></i>
+                        );
+                      } else if (button.type === 'custom') {
+                        return (
+                          <i key={colIndex} className="fa fa-times" style={button.style} aria-hidden="true"></i>
+                        );
+                      } else if (button.type === 'link') {
+                        return (
+                          <i key={colIndex} className="fa fa-times" style={button.style} aria-hidden="true"></i>
+                        );
+                      }
+                    })}
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
+          {!buttonAddRow || ( 
+            <tfoot>
+              <tr>
+                <td colSpan="5" style={{textAlign:'right'}}>
+                  {(buttonAddRow) && (
+                    <button className="btn btn-primary"> <i className="fa fa-plus" style={{marginRight:'5px'}}></i>Agregar Registro</button>
+                  )}
+                </td>
+              </tr>
+            </tfoot>
+          )}
         </Table>
       </>
     );
