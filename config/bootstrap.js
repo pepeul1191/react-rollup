@@ -7,8 +7,8 @@ import carrerController from '../api/controllers/carrer_controller.js';
 import pokemonController from '../api/controllers/pokemon_controller.js';
 import memberController from '../api/controllers/member_controller.js';
 import exerciseController from '../api/controllers/exercise_controller.js';
-import bodyPartController from '../api/controllers/body_part_controller.js';
 import fileController from '../api/controllers/file_controller.js';*/
+import bodyPartController from '../api/controllers/body_part_controller.js';
 import loginController from '../api/controllers/login_controller.js';
 import errorController from '../api/controllers/error_controller.js';
 
@@ -22,8 +22,8 @@ export default (app) => {
   app.use('/pokemon', pokemonController);
   app.use('/member', memberController);
   app.use('/exercise', exerciseController);
-  app.use('/body_part', bodyPartController);
   app.use('/file', fileController);*/
+  app.use('/body-part', bodyPartController);
   app.use('/', loginController);
   app.use('/error', errorController);
 }

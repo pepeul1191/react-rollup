@@ -1,5 +1,6 @@
-var express = require('express');
-const BodyPart = require('../../models/body_part');
+import express from 'express';
+import BodyPart  from '../models/body_part.js';
+
 var router = express.Router();
 
 router.get('/list', (req, res, next) => {
@@ -16,4 +17,4 @@ router.get('/list', (req, res, next) => {
     });
 });
 
-module.exports = router;
+export default router;

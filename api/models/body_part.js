@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize');
-var db = require('../../../config/database');
+import Sequelize from 'sequelize';
+import db from '../../config/database.js';
 
 const BodyPart = db.define('body_parts', {
   id: { 
@@ -13,4 +13,4 @@ const BodyPart = db.define('body_parts', {
   },
 });
 
-module.exports = BodyPart;
+export default BodyPart;

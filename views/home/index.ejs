@@ -1,4 +1,14 @@
-<%- include('../partials/app_header.ejs') %>
-
-
-<%- include('../partials/app_footer.ejs') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/dist/<%= (process.env.ENV == 'server') ? 'app.min': 'app' %>.css">
+  <title><%= title %></title>
+</head>
+<body>
+  <div id="root"></div>
+  <div class=""  style="display: none;" data-react-id="123"></div>
+  <script src="/dist/<%= (process.env.ENV == 'server') ? 'app.min': 'app' %>.js"></script>
+</body>
+</html>

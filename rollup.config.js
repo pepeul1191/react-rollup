@@ -13,7 +13,7 @@ const production = !process.env.ROLLUP_WATCH;
 const App = {
    input: 'src/entries/index.js',
    output: {
-      file: production ? 'public/dist/demo.min.js' : 'public/dist/demo.js',
+      file: production ? 'public/dist/app.min.js' : 'public/dist/app.js',
       format: 'iife'
    },
    plugins: [
@@ -30,7 +30,7 @@ const App = {
       commonjs(),
       json(),
       css({ 
-         output: production ?  'demo.min.css' : 'demo.css'
+         output: production ?  'app.min.css' : 'app.css'
       }),
       copy({
 			targets: [
