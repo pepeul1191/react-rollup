@@ -18,7 +18,7 @@ const Home = () => {
       <p>Bienvenido a la página de inicio.</p>
       <Container>
         <Row>
-          <Col md={3}>
+          <Col md={5}>
             <DataTable 
               ref={dataTableRef}
               path="/template" 
@@ -32,7 +32,9 @@ const Home = () => {
                 {style: {}, caption: 'Acciones'}, 
               ]}
               fetchURL={`${BASE_URL}body-part/list`}
+              saveURL={`${BASE_URL}body-part/save`}
               buttonAddRow={true}
+              buttonSave={true}
               rowButtons={[{type: 'delete', style: {'marginLeft': '22px'}}, ]}
             />
           </Col>

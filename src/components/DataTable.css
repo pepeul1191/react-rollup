@@ -6,3 +6,7 @@
 .hover:hover{
   cursor: pointer;
 }
+
+.saveButton{
+  margin-left: 10px;
+}

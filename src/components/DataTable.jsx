@@ -10,6 +10,7 @@ class DataTable extends Component {
     this.state = {
       id: '',
       fetchURL: props.fetchURL,
+      saveURL: (props.saveURL !== null && props.saveURL !== undefined) ? props.saveURL : null,
       trs: props.trs,
       ths: props.ths,
       message: '',
@@ -20,7 +21,9 @@ class DataTable extends Component {
       rowKeyId: (props.rowKeyId !== null && props.rowKeyId !== undefined) ? props.rowKeyId : 'id',
       observer: { new: [], edit: [], delete: []},
       buttonAddRow: (props.buttonAddRow !== null && props.buttonAddRow !== undefined) ? props.buttonAddRow : false,
+      buttonSave: (props.buttonSave !== null && props.buttonSave !== undefined) ? props.buttonSave : false,
       rowButtons: (props.rowButtons !== null && props.rowButtons !== undefined) ? props.rowButtons : [],
+      extraData: (props.extraData !== null && props.extraData !== undefined) ? props.extraData : {},
     };
     this.userInputRef = React.createRef();
   }
@@ -135,6 +138,111 @@ class DataTable extends Component {
     });
   }
 
+  dataSearch = (key, idSearched) => {
+    const { data  } = this.state;
+    for (var i=0; i < data.length; i++) {
+      if (data[i][key] == idSearched) {
+        return data[i];
+      }
+    }
+  }
+
+  save = (e) => {
+    const { observer, saveURL, extraData  } = this.state;
+    var dataToSend = {created:[], edited:[], deleted:[], extraData: null};
+    var recordId = null;
+    // match data with observer
+    observer.new.forEach(newed => {
+      var key = Object.keys(newed)[0];
+      recordId = key;
+      var value = newed[key];
+      var record = this.dataSearch(key, value);
+      delete record['actions'];
+      dataToSend.created.push(record);
+    });
+    observer.edit.forEach(edited => {
+      var key = Object.keys(edited)[0];
+      recordId = key;
+      var value = edited[key];
+      var record = this.dataSearch(key, value);
+      delete record['actions'];
+      dataToSend.edited.push(record);
+    });
+    observer.delete.forEach(deleted => {
+      var key = Object.keys(deleted)[0];
+      recordId = key;
+      var value = deleted[key];
+      dataToSend.deleted.push({[key]: value});
+    });
+    //console.log(dataToSend);
+    if(dataToSend.created.length == 0 && dataToSend.edited.length == 0 && dataToSend.deleted.length == 0){
+      /*launchAlert({
+        message: messages.notChanges,
+        type: 'warning',
+        timeOut: 5000
+      });*/
+      alert('no ha realizado cambios')
+    }else{
+      /*
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', fetchURL, true);
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          var data = JSON.parse(xhr.responseText);
+          console.log('Datos recibidos:', data);
+          this.setState({
+            data: data,
+          });
+        } else {
+          console.error('Error al realizar la solicitud:', xhr.statusText);
+        }
+      };
+      xhr.onerror = () => {
+        console.error('Error de red al realizar la solicitud');
+      };
+      xhr.send();
+      */
+      // do POST with ajax
+      var xhr = new XMLHttpRequest();
+      var url = saveURL;
+      var _this = this;
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          var respData = JSON.parse(xhr.responseText);
+          console.log(respData)
+          alert(respData.message)
+          respData.data.forEach(created => {
+            /*if(extraReplace.length != 0){
+              extraReplace.forEach(value => {
+                dataSearch(recordId, created.tmp)[value] = created[value];
+              })
+            }*/
+            _this.dataSearch(recordId, created.tmp)[recordId] = created[recordId];
+          });
+          observer = { new: [], edit: [], delete: []};
+          _this.setState({ 
+            observer: observer,
+            data: data
+          });
+        }else{
+          alert('error en peticion http')
+        }
+      };
+      xhr.send(JSON.stringify(dataToSend));
+    }
+  }
+
+  dataSearch = (key, idSearched) => {
+    const { data } = this.state;
+    for (var i=0; i < data.length; i++) {
+      if (data[i][key] == idSearched) {
+        return data[i];
+      }
+    }
+  }
+
   deleteRow = (e) => {
     const { data, rowKeyId, observer } = this.state;
     const rowId = e.target.parentNode.parentNode.firstChild.innerHTML;
@@ -167,7 +275,7 @@ class DataTable extends Component {
   }
 
   render() {
-    const { fetchURL, ths, data, trs, buttonAddRow, rowButtons } = this.state;
+    const { fetchURL, ths, data, trs, buttonAddRow, buttonSave, rowButtons } = this.state;
     return (
       <>
         <Table striped hover>
@@ -228,12 +336,15 @@ class DataTable extends Component {
               </tr>
             ))}
           </tbody>
-          {!buttonAddRow || ( 
+          { ( 
             <tfoot>
               <tr>
                 <td colSpan="5" style={{textAlign:'right'}}>
                   {(buttonAddRow) && (
                     <button onClick={this.addRow} className="btn btn-primary"> <i className="fa fa-plus" style={{marginRight:'5px'}}></i>Agregar Registro</button>
+                  )}
+                  {(buttonSave) && (
+                    <button onClick={this.save} className="btn btn-success saveButton"> <i className="fa fa-check" style={{marginRight:'5px'}}></i>Guardar Cambios</button>
                   )}
                 </td>
               </tr>
